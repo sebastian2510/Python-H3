@@ -64,7 +64,8 @@ for fruit in fruits:
     print(fruit)
 
 print("The list is already sorted")
-for fruit in fruits.sort():
+fruits.sort()
+for fruit in fruits:
     print(fruit)
 
 print("")

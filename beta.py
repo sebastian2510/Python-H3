@@ -11,18 +11,20 @@ class FBIWantedItem:
         self.aliases = []
         self.details = ""
 
-class FBIWantedList:
-    def __init__(self):
-        self.items = []
+def fetch_fbi_wanted_list() -> list[FBIWantedItem]:
+    response = requests.get("https://api.fbi.gov/wanted/v1/list")
+    data: list[FBIWantedItem] = []
+    resp = json.loads(response.text)
+    for item in resp['items']:
+        fbi = FBIWantedItem()
+        fbi.subjects = item['subjects']
+        fbi.title = item['title']
+        fbi.aliases = item['aliases']
+        fbi.details = item['details']
+        data.append(fbi)
 
-    def fetch(self):
-        response = requests.get("https://api.fbi.gov/wanted/v1/list")
-        if response.status_code == 200:
-            data = json.loads(response.text)
-            self.items = data['items']
-
-    def get_items(self) -> FBIWantedItem:
-        return FBIWantedItem(self.items)
+    return data
     
-print(FBIWantedList().fetch().get_items())
+test = fetch_fbi_wanted_list()
+print(test)
 
