@@ -39,19 +39,7 @@ def show_menu() -> int:
     print("3. Exit")
     return int(input("Enter your choice: "))
 
-def main():
 
-    choice = show_menu()
-    if choice == 1:
-        show_missing_persons()
-    elif choice == 2:
-        show_gang_members()
-    elif choice == 3:
-        print("Goodbye!")
-        os.abort()
-    else:
-        os.system("cls")
-        main()
 
 def show_gang_members():
     os.system("cls")
@@ -72,6 +60,7 @@ def show_gang_members():
 def show_missing_persons():
     os.system("cls")
     people = get_people("missing person")
+    print(f"length of people: {len(people)}")
     missing_persons = [person for person in people if isinstance(person, missing_person)]
             
     for i, person in enumerate(missing_persons):
@@ -90,7 +79,7 @@ def get_people(subj: str) -> list[base_person]:
     persons: list[base_person] = []
     for values in value['items']:
         for subjects in values['subjects']:
-            if subjects in subj:
+            if subj.lower() not in subjects.lower():
                 continue
 
             person = base_person()
@@ -99,5 +88,19 @@ def get_people(subj: str) -> list[base_person]:
             persons.append(person)
 
     return persons
+
+def main():
+
+    choice = show_menu()
+    if choice == 1:
+        show_missing_persons()
+    elif choice == 2:
+        show_gang_members()
+    elif choice == 3:
+        print("Goodbye!")
+        os.abort()
+    else:
+        os.system("cls")
+        main()
 
 main()
