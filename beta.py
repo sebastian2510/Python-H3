@@ -44,7 +44,7 @@ def show_menu() -> int:
 def show_gang_members():
     os.system("cls")
     people = get_people("Criminal Enterprise Investigations")
-    gang_members = [person for person in people if isinstance(person, gang_member)]
+    gang_members = [convert_to_child(person, gang_member) for person in people]
 
     for i in range(len(gang_members)):
         print(f"[{i}] gang member: {gang_members[i].fornavn} {gang_members[i].efternavn} | gang name: {gang_members[i].gang_name}")
@@ -55,13 +55,13 @@ def show_gang_members():
     gang_name = input(f"Enter the gang {gang_members[choice].fornavn} is a part of: ")
     gang_members[choice].gang_name = gang_name
     print("Saved!")
-    show_menu()
+    main()
 
 def show_missing_persons():
     os.system("cls")
     people = get_people("missing person")
     print(f"length of people: {len(people)}")
-    missing_persons = [person for person in people if isinstance(person, missing_person)]
+    missing_persons = [convert_to_child(person, missing_person) for person in people]
             
     for i, person in enumerate(missing_persons):
         print(f"[{i}] Missing person: {person.fornavn} {person.efternavn} | Last seen: {person.last_seen}")
@@ -72,7 +72,7 @@ def show_missing_persons():
     last_seen = input(f"Enter the last seen location of {missing_persons[choice].fornavn}: ")
     missing_persons[choice].last_seen = last_seen
     print("Saved!")
-    show_menu()
+    main()
 
 
 def get_people(subj: str) -> list[base_person]:
@@ -88,6 +88,14 @@ def get_people(subj: str) -> list[base_person]:
             persons.append(person)
 
     return persons
+
+
+def convert_to_child(obj, valueType: type):
+    value = valueType()
+    value.id = obj.id
+    value.fornavn = obj.fornavn
+    value.efternavn = obj.efternavn
+    return value
 
 def main():
 
