@@ -18,6 +18,9 @@ value = fetch_fbi_wanted_list()
 
 
 async def write_to_csv():
+    if value is None:
+        value = fetch_fbi_wanted_list()
+        
     titles = [item['title'] for item in value['items']]
     subjects = [item['subjects'] for item in value['items']]
     aliases = [item['aliases'] for item in value['items']]

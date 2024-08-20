@@ -1,5 +1,3 @@
-import math
-
 def detect_ranges(l1):
     ranges = []
     l1.sort()
@@ -21,7 +19,5 @@ def detect_ranges(l1):
         ranges.append(f"({start},{end + 1})")
     return ranges
 
-
-
 if __name__ == "__main__":
-    print("\nDag 2 øvelse datastruktur begreber\n")
+    print(detect_ranges([2,5,4,8,12,6,7,10,13]))
