@@ -1,6 +1,7 @@
 import requests
 import json
 import csv
+import json
 from gang_member import gang_member
 from missing_person import missing_person
 from base_person import base_person
@@ -10,28 +11,45 @@ import asyncio
 # Convert the following code to classes
 # {'items': [{'subjects': [], 'title': "", 'aliases': [], 'details': ""}]}
 
-def fetch_fbi_wanted_list():
-    response = requests.get("https://api.fbi.gov/wanted/v1/list")
-    return response.json()
 
-value = fetch_fbi_wanted_list()
+async def fetch_fbi_wanted_list():
+    while True:
+        print("Fetching FBI wanted list...")
+        response = requests.get("https://api.fbi.gov/wanted/v1/list")
+        try:
+            global value
+            value = response.json()
+            print("Fetched FBI wanted list")
+        except json.decoder.JSONDecodeError as e:
+            print("Error decoding JSON")
+            # print(response.text)
+            print(e)
+            os.abort()
+        await write_to_csv()
+        await asyncio.sleep(60 * 60 * 24) # 24 hours
+
+value: any = None
 
 
 async def write_to_csv():
-    if value is None:
-        value = fetch_fbi_wanted_list()
-        
-    titles = [item['title'] for item in value['items']]
-    subjects = [item['subjects'] for item in value['items']]
-    aliases = [item['aliases'] for item in value['items']]
-    details = [item['details'] for item in value['items']]
-    with open('fbi_wanted_list.csv', mode='w') as file:
-        writer = csv.writer(file)
-        writer.writerow(['Title', 'Subjects', 'Aliases', 'Details'])
-        for i in range(len(titles)):
-            writer.writerow([titles[i], subjects[i], aliases[i], details[i]])
 
-write_to_csv()
+    ids = [item['uid'] for item in value['items']]
+    names = [item['title'] for item in value['items']]
+    subjects = [item['subjects'] for item in value['items']]
+    aliases =  [item['aliases'] for item in value['items']]
+    details =  [item['details'] for item in value['items']]
+
+
+    with open('fbi-wanted_list.csv', mode='w') as file:
+        writer = csv.writer(file)
+
+        # Write the header row
+        writer.writerow(['id', 'name', 'subjects', 'aliases', 'details'])
+        
+        # Write the data rows
+        for id, name, subject, alias, detail in zip(ids, names, subjects, aliases, details):
+            writer.writerow([id, name, subject, alias, detail])
+
 
 def extract_first_last_name(full_name):
     names = full_name.split()
@@ -101,7 +119,9 @@ def convert_to_child(obj, valueType: type):
     value.efternavn = obj.efternavn
     return value
 
-def main():
+async def main():
+    await fetch_fbi_wanted_list()
+
 
     choice = show_menu()
     if choice == 1:
@@ -115,4 +135,5 @@ def main():
         os.system("cls")
         main()
 
-main()
+if __name__ == "__main__":
+    asyncio.run(main())
