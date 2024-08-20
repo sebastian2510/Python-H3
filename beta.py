@@ -5,6 +5,7 @@ from gang_member import gang_member
 from missing_person import missing_person
 from base_person import base_person
 import os
+import asyncio
 
 # Convert the following code to classes
 # {'items': [{'subjects': [], 'title': "", 'aliases': [], 'details': ""}]}
@@ -14,12 +15,13 @@ def fetch_fbi_wanted_list():
     return response.json()
 
 value = fetch_fbi_wanted_list()
-titles = [item['title'] for item in value['items']]
-subjects = [item['subjects'] for item in value['items']]
-aliases = [item['aliases'] for item in value['items']]
-details = [item['details'] for item in value['items']]
 
-def write_to_csv():
+
+async def write_to_csv():
+    titles = [item['title'] for item in value['items']]
+    subjects = [item['subjects'] for item in value['items']]
+    aliases = [item['aliases'] for item in value['items']]
+    details = [item['details'] for item in value['items']]
     with open('fbi_wanted_list.csv', mode='w') as file:
         writer = csv.writer(file)
         writer.writerow(['Title', 'Subjects', 'Aliases', 'Details'])
@@ -38,7 +40,6 @@ def show_menu() -> int:
     print("2. Show gang members")
     print("3. Exit")
     return int(input("Enter your choice: "))
-
 
 
 def show_gang_members():
