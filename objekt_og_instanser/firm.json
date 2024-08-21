@@ -1,0 +1,18 @@
+{
+    "teachers": [
+        {
+            "name": "Palle",
+            "lastname": "Westerman",
+            "courses": [
+                "Python"
+            ]
+        },
+        {
+            "name": "test",
+            "lastname": "test",
+            "courses": [
+                "BigData 1"
+            ]
+        }
+    ]
+}
