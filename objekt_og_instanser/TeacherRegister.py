@@ -3,7 +3,7 @@ from Teacher import teacher
 from Company import TEC
 import os
 import time
-import json
+
 
 firm = FileClass.read_file()
 
