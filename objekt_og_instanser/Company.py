@@ -8,12 +8,19 @@ class TEC:
         return {
             'teachers': [t.to_dict() for t in self.teachers]
         }
-
+    
+    def find_teacher(self, name: str, lastname: str):
+        for teacher in self.teachers:
+            if teacher.name == name and teacher.lastname == lastname:
+                return teacher
+        return None
     def add_teacher(self, teacher: teacher):
-        if teacher not in self.teachers:
+        old_teacher = self.find_teacher(teacher.name, teacher.lastname)
+        if old_teacher is None:
             self.teachers.append(teacher)
-            return True
-        return False
+            return
+        
+        old_teacher.courses = teacher.courses
     
     def remove_teacher(self, teacher: teacher):
         if teacher in self.teachers:
@@ -24,8 +31,3 @@ class TEC:
     def get_teachers(self):
         return self.teachers
     
-    def find_teacher(self, name: str, lastname: str):
-        for teacher in self.teachers:
-            if teacher.name == name and teacher.lastname == lastname:
-                return teacher
-        return None

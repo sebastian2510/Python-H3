@@ -67,6 +67,8 @@ def update_teacher() -> None:
     
     if choice == 1:
         add_course(teacher)
+    else:
+        remove_course(teacher)
     
 
 def show_teachers():
@@ -86,6 +88,7 @@ def show_teachers():
 
 
 def remove_teacher():
+    os.system("cls")
     teacher = select_teacher()
     firm.remove_teacher(teacher)
     FileClass.write_file(firm)
@@ -97,10 +100,16 @@ def remove_course(teacher: teacher):
         time.sleep(3)
         return
     
+    if teacher.courses is None or len(teacher.courses) == 0:
+        print(f"{teacher.name} har ingen tildelte fag!")
+        input("\nTryk enter tast for at gå tilbage")
+        return
+
+    
     for i, course in enumerate(teacher.courses):
         print(f"[{i}] {course}")
     
-    choices = input("Vælg fag (tom for at gå tilbage): ")
+    choices = input("Vælg fag (seperaret med mellemrum, tom for at gå tilbage): ")
     if not choices:
         return
     
@@ -110,13 +119,14 @@ def remove_course(teacher: teacher):
             if choice < 0 or choice > len(courses):
                 print(f"- ugyldig værdi: {choice}")
                 continue
-            teacher.courses.remove()
+            teacher.courses.remove(teacher.courses[choice])
     else:
         choice = int(choices)
         if choice < 0 or choice > len(courses):
             print(f"- ugyldig værdi {choice}")
-            
-        teacher.courses.append(courses[choice])
+            return
+        teacher.courses.remove(teacher.courses[choice])
+    
 
 def add_course(teacher):
     if teacher is None:
@@ -139,11 +149,22 @@ def add_course(teacher):
             if choice < 0 or choice > len(courses):
                 print(f"- ugyldig værdi: {choice}")
                 continue
+
+            if courses[choice] in teacher.courses:
+                print(f"Fag er allerede tildelt {teacher.name}: {courses[choice]}")
+                continue
             teacher.courses.append(courses[choice])
     else:
         choice = int(choices)
         if choice < 0 or choice > len(courses):
             print(f"- ugyldig værdi {choice}")
+            input("Tryk enter tast for at gå tilbage")
+            return
+        
+        if courses[choice] in teacher.courses:
+            print(f"Fag er allerede tildelt {teacher.name}: {courses[choice]}")
+            input("Tryk enter tast for at gå tilbage")
+            return
             
         teacher.courses.append(courses[choice])
 
@@ -173,7 +194,7 @@ def show_menu() -> int:
         print("3. Vis liste af lærere")
         print("4. Fjern lærer")
         print("5. Save & Exit")
-        choice = int(input("dit valg: "))
+        choice = int(input("dit valg: ").strip())
         if choice < 1 or choice > 5:
             continue
         
