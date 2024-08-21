@@ -60,10 +60,13 @@ def show_menu() -> int:
     return int(input("Enter your choice: "))
 
 
+gang_members = []
 def show_gang_members():
     os.system("cls")
     people = get_people("Criminal Enterprise Investigations")
-    gang_members = [convert_to_child(person, gang_member) for person in people]
+    global gang_members
+    if len(gang_members) == 0:
+        gang_members = [convert_to_child(person, gang_member) for person in people]
 
     for i in range(len(gang_members)):
         print(f"[{i}] gang member: {gang_members[i].fornavn} {gang_members[i].efternavn} | gang name: {gang_members[i].gang_name}")
@@ -77,11 +80,13 @@ def show_gang_members():
     print("Saved!")
     main()
 
+missing_persons = []
 def show_missing_persons():
     os.system("cls")
     people = get_people("missing person")
-    print(f"length of people: {len(people)}")
-    missing_persons = [convert_to_child(person, missing_person) for person in people]
+    global missing_persons
+    if len(missing_persons) == 0:
+        missing_persons = [convert_to_child(person, missing_person) for person in people]
 
     for i, person in enumerate(missing_persons):
         print(f"[{i}] Missing person: {person.fornavn} {person.efternavn} | Last seen: {person.last_seen}")
@@ -126,7 +131,7 @@ def convert_to_child(obj, valueType: type):
     valueType.id = obj.id
     valueType.fornavn = obj.fornavn
     valueType.efternavn = obj.efternavn
-    return wanted_list_data
+    return valueType
 
 async def main():
     asyncio.create_task(fetch_fbi_wanted_list())
@@ -142,6 +147,7 @@ async def main():
             break
         else:
             print("Invalid choice")
+        await asyncio.sleep(0)
 
 if __name__ == "__main__":
     asyncio.run(main())
