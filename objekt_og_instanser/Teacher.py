@@ -7,3 +7,12 @@ class teacher(base_person):
     def to_dict(self):
         return self.__dict__
     
+    def full_name(self) -> str:
+        return f"{self.name} {self.lastname}"
+    
+    def first_name_prop(self, name):
+        self.name = name
+
+    def last_name_prop(self, lastname):
+        self.lastname = lastname
+    

@@ -1,8 +1,8 @@
 # Øvelse: Grundlæggendeinput/output funktion
 value: int = 1
 print(f"{value} + {value} equals {value + value}")
-# name: str = input("Give me your name: ")
-# print(f"Hello, {name}!")
+name: str = input("Give me your name: ")
+print(f"Hello, {name}!")
 
 for i in range(4):
     if i == 3:

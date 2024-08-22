@@ -84,8 +84,9 @@ missing_persons = []
 def show_missing_persons():
     os.system("cls")
     people = get_people("missing person")
+    print(len(people))  
     global missing_persons
-    if len(missing_persons) == 0:
+    if len(missing_persons) == 0 or missing_persons is None:
         missing_persons = [convert_to_child(person, missing_person) for person in people]
 
     for i, person in enumerate(missing_persons):
@@ -103,6 +104,7 @@ def show_missing_persons():
 
 def get_people(subj: str) -> list[base_person]:
     persons: list[base_person] = []
+    print(wanted_list_data)
     for values in wanted_list_data['items']:
         for subjects in values['subjects']:
             if subj.lower() not in subjects.lower():

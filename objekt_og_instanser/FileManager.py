@@ -17,7 +17,7 @@ class FileClass:
                 return TEC()
             if content == "{}":
                 return TEC()
-            # Return as TEC object
+            # Return as TEC object 
             firm = TEC()
             data = json.loads(content)
             for t in data['teachers']:

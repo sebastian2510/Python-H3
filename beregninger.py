@@ -1,16 +1,21 @@
 def main():
     name = input("What is your name? ")
     percentage_list = list()
-    days = 3
+    days = 4
+    day = 1
     for i in range(days):
-        day = 1
-        percentage = int(input(f"Indtast % af færdiggjorte opgaver for dag {day}"))
+        percentage = int(input(f"Indtast % af færdiggjorte opgaver for dag {day} "))
         if (percentage < 0 or percentage > 100):
             print("Percentage must be between 0 and 100")
             days += 1
             continue
         day += 1
+        
         percentage_list.append(percentage)
+
+    total_percentage = sum(percentage_list)
+    score = total_percentage / 4
+    print(f"Percentage: {score}% Total score: {get_score(score)}")
     
 
 
@@ -27,3 +32,6 @@ def get_score(percentage):
     if percentage >= 20:
         return 2
     return 0
+
+if __name__ == "__main__":
+    main()

@@ -1,10 +1,17 @@
 {
     "teachers": [
         {
+            "name": "Niels",
+            "lastname": "Olesen",
+            "courses": [
+                "BigData 1"
+            ]
+        },
+        {
             "name": "Palle",
             "lastname": "Westerman",
             "courses": [
-                "IoT embedded"
+                "Serverside programmering"
             ]
         }
     ]
